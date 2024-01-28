@@ -3,7 +3,7 @@ const { createTodo, updateTodo } = require('./types');
 const { todo } = require('./db');
 
 const app = express()
-app.use(express.json)
+app.use(express.json())
 
 
 
@@ -11,7 +11,7 @@ app.post("/todo", async function (req, res) {
     const createPayLoad = req.body;
     const parsepayload = createTodo.safeParse(createPayLoad)
     if (!parsepayload.success) {
-        res.status(411).json({
+        res.status(404).json({
             msg: "you have enter the wrong input"
         })
         return;
@@ -44,12 +44,10 @@ app.put("/completed",async function (req, res) {
         return;
 
     }
-    await todo.update({
-        _id: req.body.id
-    },{
-        completed:true
-    })
-
+    await todo.updateOne(
+        { _id: req.body.id },
+        { completed: true }
+    );
 res.json({
     msg: "done this user"
 })
