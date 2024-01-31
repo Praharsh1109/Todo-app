@@ -6,9 +6,10 @@ import { CreateTodo } from '../component/CreateTodo'
 
 
 function App() {
-  
+  const [count,useCount] = useState(0)
   return (
     <div>
+      <count>{count}</count>
       <CreateTodo />
           </div>
   )
