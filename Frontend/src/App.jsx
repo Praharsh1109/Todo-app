@@ -2,16 +2,19 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { CreateTodo } from '../component/CreateTodo'
-
-
+import { CreateTodo } from './component/CreateTodo.jsx'
+import { Todos } from './component/Todos.jsx'
+// useEffect hook
 function App() {
-  const [count,useCount] = useState(0)
+  const [todos, setTodos] = useState([]);
+
+  
+
   return (
     <div>
-      <count>{count}</count>
-      <CreateTodo />
-          </div>
+      <CreateTodo></CreateTodo>
+      <Todos todos={todos}></Todos>
+    </div>
   )
 }
 
