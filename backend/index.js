@@ -1,57 +1,62 @@
-const express = require('express');
-const { createTodo, updateTodo } = require('./types');
-const { todo } = require('./db');
+const express = require("express");
+const { createTodo, updateTodo } = require("./types");
+const { todo } = require("./db");
+const cors = require("cors");
+const app = express();
 
-const app = express()
-app.use(express.json())
+app.use(express.json());
+app.use(cors());
 
+app.post("/todo", async function(req, res) {
+    const createPayload = req.body;
+    const parsedPayload = createTodo.safeParse(createPayload);
 
-
-app.post("/todo", async function (req, res) {
-    const createPayLoad = req.body;
-    const parsepayload = createTodo.safeParse(createPayLoad)
-    if (!parsepayload.success) {
-        res.status(404).json({
-            msg: "you have enter the wrong input"
-        })
-        return;
-
-    }
-    await todo.create({
-        title: createPayLoad.title,
-        description: createPayLoad.description
-        
-    })
-    res.json({
-        msg: "todo done "
-    })
-})
-app.get("/todos",async function (req, res) {
-const todos = await todo.find({});
-
-res.json({
-    todos
-})
-
-})
-app.put("/completed",async function (req, res) {
-    const updatePayLoad = req.body;
-    const parsepayload = updateTodo.safeParse(updatePayLoad)
-    if (!parsepayload.success) {
+    if (!parsedPayload.success) {
         res.status(411).json({
-            msg: "you sent the wrong the inputs"
+            msg: "You sent the wrong inputs",
         })
         return;
-
     }
-    await todo.updateOne(
-        { _id: req.body.id },
-        { completed: true }
-    );
-res.json({
-    msg: "done this user"
-})
+    // put it in mongodb
+    await todo.create({
+        title: createPayload.title,
+        description: createPayload.description,
+        completed: false
+    })
+
+    res.json({
+        msg: "Todo created"
+    })
 })
 
+app.get("/todos", async function(req, res) {
+    // const todos = await todo.find({});
 
-app.listen(3000)
+    res.json({
+        todos: []
+    })
+
+})
+
+app.put("/completed", async function(req, res) {
+    const updatePayload = req.body;
+    const parsedPayload = updateTodo.safeParse(updatePayload);
+    if (!parsedPayload.success) {
+        res.status(411).json({
+            msg: "You sent the wrong inputs",
+        })
+        return;
+    }
+
+    await todo.update({
+        _id: req.body.id
+    }, {
+      completed: true  
+    })
+
+    res.json({
+        msg: "Todo marked as completed"
+    })
+})
+
+app.listen(3000);
