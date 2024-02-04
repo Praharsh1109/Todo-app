@@ -18,12 +18,12 @@
 //     description: "go to gym",
 //    } 
 //    ]
-todos = [
-       {
-        title: "go to gym",
-        description: "go to gym",
-       } 
-       ]
+// todos = [
+//        {
+//         title: "go to gym",
+//         description: "go to gym",
+//        } 
+//        ]
     
 
 export function Todos({todos}) {
