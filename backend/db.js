@@ -4,14 +4,14 @@ const { boolean, string } = require('zod')
 
 mongoose.connect('mongodb+srv://admin:admin123@firstdatabase.lyxqw8k.mongodb.net/')
 
-const todoSchema = mongoose.Schema({
-    title: String,
+const cardSchema = mongoose.Schema({
+    id: String,
     description: String,
-    completed: Boolean
+    
 })
 
-const todo = mongoose.model('todos', todoSchema);
+const card = mongoose.model('card', cardSchema);
 
 module.exports = {
-    todo
+    card 
 }

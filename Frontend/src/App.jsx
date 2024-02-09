@@ -1,21 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { CreateTodo } from './component/CreateTodo.jsx'
-import { Todos } from './component/Todos.jsx'
-// useEffect hook
-function App() {
-  const [todos, setTodos] = useState([]);
+import React, { useState } from 'react';
+import Createcomponent from './component/Createcomponent';
+import axios from 'axios'
 
-  
+function App() {
+  const [name, setName] = useState("");
+  const [desc, setDesc] = useState("");
+  const [showComponent, setShowComponent] = useState(false);
+
+  const handleShowComponent = () => {
+    setShowComponent(true);
+  };
 
   return (
     <div>
-      <CreateTodo></CreateTodo>
-      <Todos todos={todos}></Todos>
+      <input type='text' onChange={(e) => setName(e.target.value)} placeholder='ID' /><br/><br/>
+      <input type='text' onChange={(e) => setDesc(e.target.value)} placeholder='Description'/><br/><br/>
+      <button onClick={handleShowComponent}>Sign In</button>
+      
+      {showComponent && <Createcomponent first={name} second={desc} />}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
