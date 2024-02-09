@@ -1,46 +1,50 @@
-const express = require('express')
+const express = require('express');
 const cors = require('cors');
-const { card } = require('./db.js');
+const { createId } = require('./types');
+const { Card } = require('./db');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.post("/card", async (req, res) => {
+    const inputData = req.body;
 
-app.post("/card", async function(req, res) {
-    const createId = req.body;
-    const parseId = card.safeParse(createId);
-
-    if (!parseId.success) {
-        res.status(411).json({
-            msg: "You sent the wrong inputs",
-        })
-        return;
-    }
-    // put it in mongodb
-    await card.create({
-        id: createId.title,
-        description: createId.description
+    try {
         
-    })
+        const validatedData = createId.parse(inputData);
 
-    res.json({
-        msg: "Id created"
-    })
-})
+        
+        await Card.create({
+            id: validatedData.id,
+            description: validatedData.description
+        });
 
-app.get("/getIds", async function(req, res) {
-    // const todos = await todo.find({});
+        return res.json({
+            message: "Card created successfully"
+        });
+    } catch (error) {
+        console.error("Error creating card:", error);
+        return res.status(400).json({
+            error: "Invalid input data"
+        });
+    }
+});
 
-    res.json({
-        card: []
-    })
 
-})
+app.get('/getId', async (req, res) => {
+    try {
+        const cards = await Card.find();
+        return res.json(cards);
+    } catch (error) {
+        console.error("Error fetching cards:", error);
+        return res.status(500).json({
+            error: "Internal server error"
+        });
+    }
+});
 
-port = 5174
-
-app.listen(port,()=>{
-    console.log( `port is unning on ${port} `)
-   
+const port = 5174;
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
