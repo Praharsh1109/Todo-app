@@ -52,7 +52,7 @@ function App() {
       <br />
       <br />
       <button onClick={handleShowComponent}>Sign In</button>
-      {/* {showComponent && <Createcomponent first={name} second={desc} />} */}
+      {showComponent && <Createcomponent first={name} second={desc} />}
       <h2>Card IDs:</h2>
       <ol>
         {data.map((card) => (
